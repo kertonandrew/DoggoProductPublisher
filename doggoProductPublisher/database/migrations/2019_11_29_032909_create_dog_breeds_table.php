@@ -22,7 +22,7 @@ class CreateDogBreedsTable extends Migration
         });
 
         // Broke this out from Schema::create, not sure if the table needs to
-        // be created first before linking a key to it
+        // be created first before referencing it.
         Schema::table('dog_breeds', function (Blueprint $table) {
             $table->foreign('breedGroup_id')->references('id')->on('dog_breeds');
         });
