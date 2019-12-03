@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Todo: Get dog breeds route
+Route::get('dogBreeds', 'DogApiController@index');
+
+// Todo: Get products route
+

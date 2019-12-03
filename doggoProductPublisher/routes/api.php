@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route::get('dogBreeds', 'DogBreedController@index');
+// Route::post('dogBreeds', 'DogBreedController@store');
+// Route::delete('dogBreeds/{id}', 'DogBreedController@destroy');

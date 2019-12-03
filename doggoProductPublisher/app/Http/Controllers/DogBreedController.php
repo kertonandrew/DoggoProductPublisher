@@ -62,8 +62,14 @@ class DogBreedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DogBreed $dogBreed)
     {
-        //
+        try {
+            $dogBreed->delete();
+        } catch (\Exception $ex) {
+            return response()->json(['error' => $ex->getMessage()], 403);
+        }
+
+        return response()->json(null, 204);
     }
 }
