@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as DogClient;
 
 class DogServiceProvider extends ServiceProvider
 {
@@ -16,8 +16,8 @@ class DogServiceProvider extends ServiceProvider
     {
         $baseUrl = env('DOG_API_BASE_URL');
 
-        $this->app->singleton('GuzzleHttp\Client', function($api) use ($baseUrl) {
-            return new Client([
+        $this->app->singleton('DogClient', function($api) use ($baseUrl) {
+            return new DogClient([
                 'base_uri' => $baseUrl,
             ]);
         });

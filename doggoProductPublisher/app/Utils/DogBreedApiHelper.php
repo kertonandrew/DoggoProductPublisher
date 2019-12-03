@@ -2,17 +2,18 @@
 
 namespace App\Utils;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as DogClient;
+use GuzzleHttp\Client as ShopifyClient;
 
-class DogBreedApi
+
+class DogBreedApiHelper
 {
 	protected $client;
 
-	public function __construct(Client $client)
+	public function __construct(DogClient $client, ShopifyClient $shopifyClient)
 	{
-		$this->client = $client;
+        $this->client = $client;
 	}
-
 
 	public function listAll()
 	{
@@ -49,6 +50,7 @@ class DogBreedApi
 		try {
             $response = $this->client->request('GET', $url);
 		} catch (\Exception $e) {
+
             // Todo: Log errors and notify?
             return [];
 		}
