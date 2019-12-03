@@ -24,13 +24,10 @@ class DogApiController extends Controller
      */
     public function index(Request $request)
     {
-
-        // var_dump($request);
-
         $dogs = $this->dogBreedApi->listAll();
 
-        // valitate response
-        return DogBreedResource::collection($dogs);
+        //Todo: valitate response
+        return ($dogs);
     }
 
     /**
@@ -41,8 +38,11 @@ class DogApiController extends Controller
      */
     public function show($breed)
     {
-    	$dog = $this->dogBreedApi->listImagesByBreed($breed);
-        return DogBreedResource::collection($dog);
+        $dog = $this->dogBreedApi->listImagesByBreed($breed);
+
+        //Todo: valitate response
+
+        return $dog;
     }
 
 }

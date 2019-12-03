@@ -52,16 +52,14 @@ class DogBreedApi
             // Todo: Log errors and notify?
             return [];
 		}
-
 		return $this->response_handler($response->getBody()->getContents());
 	}
 
 	public function response_handler($response)
 	{
 		if ($response) {
-			return json_decode($response);
+			return $response;
 		}
-
 		return [];
 	}
 }
