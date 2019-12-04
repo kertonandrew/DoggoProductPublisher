@@ -45,7 +45,7 @@ class SyncDoggos extends Command
      */
     public function handle(ShopifyApiHelper $shopifyApiHelper, DogApiHelper $dogApiHelper, Faker $faker)
     {
-        $dogs = $dogApiHelper->extractAllAndStore();
+        $dogs = $dogApiHelper->extractAllAndStore(3);
         dump("Dogs created and collected");
 
         $dogs->each(function ($dog) use ($shopifyApiHelper, $faker){

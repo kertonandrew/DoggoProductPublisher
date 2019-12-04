@@ -46,7 +46,7 @@ class DogApiHelper
 
     // Gets all the breeds from the API returns a random selection as a collection of DogBreeds
     // Not sure if this should be in this class from a Laravel perspective
-    public function extractAllAndStore($count = 2)
+    public function extractAllAndStore($count = 5)
     {
         $dogList = $this->listAll();
         $doggoSelection = array_rand($dogList, $count);

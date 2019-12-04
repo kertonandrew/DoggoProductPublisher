@@ -69,7 +69,8 @@
                 <div class="title m-b-md">Doggo Store Tools</div>
                 <div class="links">
                     <!-- get doggos from api -->
-                    <a href="{{ config('app.url')}}/dogProducts">Get Doggo Products</a>
+                    <a href="{{ config('app.url')}}/dogProducts">GET Doggo Products</a>
+                    <a href="{{ config('app.url')}}/dogBreeds">GET Doggo Breeds</a>
                 </div>
             </div>
         </div>
