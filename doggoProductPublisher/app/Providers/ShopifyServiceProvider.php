@@ -14,19 +14,16 @@ class ShopifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $baseUrl = env('SHOPIFY_API_BASE_URL');
+        $baseUri = env('SHOPIFY_API_BASE_URI');
         $apiKey = env('SHOPIFY_API_KEY');
         $password = env('SHOPIFY_API_PASSWORD');
         $version = env('SHOPIFY_API_VERSION');
 
-        $this->app->when('App\Utils\ShopifyProductHelper')
+        $this->app->when('App\Utils\ShopifyApiHelper')
             ->needs('GuzzleHttp\Client')
-            ->give(function() use ($baseUrl, $apiKey, $password, $version) {
+            ->give(function() use ($baseUri, $apiKey, $password, $version) {
                 return new Client([
-                    'base_url' => [$baseUrl.'/{version}/', ['version' => $version]],
-                    'defaults' => [
-                        'auth'    => [$apiKey, $password]
-                    ]
+                    'base_uri' => 'https://'.$apiKey.':'.$password.'@'.$baseUri.$version.'/',
                 ]);
             });
     }

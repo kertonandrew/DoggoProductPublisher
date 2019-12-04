@@ -21,3 +21,4 @@ Route::get('dogBreeds/{count}', 'DogApiController@extractAllAndStore');
 
 // Shopify Product routes
 Route::get('dogProducts', 'ShopifyApiController@index');
+Route::post('dogProducts', 'ShopifyApiController@store');

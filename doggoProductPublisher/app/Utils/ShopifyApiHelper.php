@@ -18,9 +18,9 @@ class ShopifyApiHelper
 		return $this->get('products.json');
     }
 
-	public function create($productJson)
+	public function create($data)
 	{
-		return $this->post('products.json', $productJson);
+		return $this->post('products.json', $data);
     }
 
 	public function post($url, $json)

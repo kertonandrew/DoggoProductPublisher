@@ -16,6 +16,13 @@ class ShopifyApiController extends Controller
 
     public function index()
     {
-        return $this->shopifyApiHelper->index();
+       return $this->shopifyApiHelper->index();
     }
+
+    public function store(Request $request)
+    {
+        $data = $request->json()->all();
+        return $this->shopifyApiHelper->create($data);
+    }
+
 }
