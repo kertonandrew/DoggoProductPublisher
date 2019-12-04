@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Utils\DogApiHelper;
 use App\DogBreed;
 use App\Http\Resources\DogBreedResource;
+use Illuminate\Support\Collection;
 
 class DogApiController extends Controller
 {
@@ -22,48 +23,39 @@ class DogApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function extractAllAndStore(Request $request)
+    public function extractAllAndStore($count = 5)
     {
-        $dogsArray = $this->dogApiHelper->listAll();
+
+        $dogList = $this->dogApiHelper->listAll();
+        $doggoSelection = array_rand($dogList, $count);
 
         //Todo: valitate response
 
         $dogs = [];
-        foreach ($dogsArray as $breedName => $subBreedNames) {
-
-            $breedObj = new DogBreed();
-            $breedObj->fill([
+        foreach ($doggoSelection as $breedName) {
+            $breedImage = $this->dogApiHelper->randonImageByBreed($breedName);
+            $breedObj = DogBreed::create([
                 'name' => $breedName,
-                'imageUrl' => $this->dogApiHelper->randonImageByBreed($breedName)
+                'imageUrl' => $breedImage
             ]);
 
             $subBreeds = [];
-            foreach ($subBreedNames as $subBreedName) {
-
-                $subBreedObj = new DogBreed();
-                $subBreedObj->fill([
+            foreach ($dogList[$breedName] as $subBreedName) {
+                $subBreedImage = $this->dogApiHelper->randonImageBySubBreed($breedName, $subBreedName);
+                $subBreedObj = DogBreed::create([
                     'breedGroup_id' => $breedObj->id,
                     'name' => $breedName,
-                    'imageUrl' => $this->dogApiHelper->randonImageByBreed($subBreedName)
+                    'imageUrl' => $subBreedImage
                 ]);
-
                 $subBreeds[] = $subBreedObj;
             }
 
-            // To handle "Array to string conversion" issue - not sure what's happening here.
-            // Mostly likely something that would be handled by propper validation.
-            try{
-                $breedObj->subBreeds()->saveMany($subBreeds);
-            } catch(\Exception $e){
-                dump($e);
-            }
+            $breedObj->subBreeds()->saveMany($subBreeds);
 
             $dogs[] = $breedObj;
         }
 
-        //Todo: create dog breed model
-
-        return $dogs;
+        return collect($dogs);
     }
 
     /**

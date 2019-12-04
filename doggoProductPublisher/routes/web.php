@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 // Todo: Get dog breeds route
 Route::get('dogBreeds', 'DogApiController@extractAllAndStore');
+Route::get('dogBreeds/{count}', 'DogApiController@extractAllAndStore');
 Route::get('dogBreeds/{breed}', 'DogApiController@extractBreedAndStore');
 
 // Todo: Get products route
