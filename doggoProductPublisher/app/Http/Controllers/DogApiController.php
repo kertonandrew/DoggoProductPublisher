@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Utils\DogApiHelper;
 use App\DogBreed;
+use App\Http\Resources\DogBreedResource;
 
 class DogApiController extends Controller
 {
@@ -30,23 +31,22 @@ class DogApiController extends Controller
         $dogs = [];
         foreach ($dogsArray as $breedName => $subBreedNames) {
 
-            $breedObj = new DogBreed();
-            $breedObj->fill([
+            $breedImage = $this->dogApiHelper->randonImageByBreed($breedName);
+
+            $breedObj = DogBreed::create([
                 'name' => $breedName,
-                'imageUrl' => $this->dogApiHelper->randonImageByBreed($breedName)
+                'imageUrl' => $breedImage
             ]);
 
             $subBreeds = [];
             foreach ($subBreedNames as $subBreedName) {
+                $subBreedImage = $this->dogApiHelper->randonImageByBreed($subBreedName);
 
-                $subBreedObj = new DogBreed();
-                $subBreedObj->fill([
+                $subBreeds[] = DogBreed::create([
                     'breedGroup_id' => $breedObj->id,
                     'name' => $breedName,
-                    'imageUrl' => $this->dogApiHelper->randonImageByBreed($subBreedName)
+                    'imageUrl' => $subBreedImage
                 ]);
-
-                $subBreeds[] = $subBreedObj;
             }
 
             $breedObj->subBreeds()->saveMany($subBreeds);
@@ -54,9 +54,11 @@ class DogApiController extends Controller
             $dogs[] = $breedObj;
         }
 
+        dd($dogs);
+
         //Todo: create dog breed model
 
-        return ($dogs);
+        return DogBreedResource::collection($dogs);
     }
 
     /**
