@@ -67,13 +67,13 @@ class SyncDoggos extends Command
             ]);
 
             // Add variants
-            foreach ($dog->subBreeds() as $subBreed) {
+            foreach ($dog->subBreeds as $subBreed) {
 
                 DogProductVariant::create([
                     'dog_product_id' => $dogProduct->id,
-                    // 'price' => $faker->randomNumber(2),
+                    'price' => $faker->randomNumber(2),
                     'option1' => $subBreed->name,
-                    // 'sku' => $faker->isbn10
+                    'sku' => $faker->isbn10
                 ]);
             }
 
