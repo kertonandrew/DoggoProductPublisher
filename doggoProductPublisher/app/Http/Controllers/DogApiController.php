@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Utils\DogBreedApiHelper;
-use App\Http\Resources\DogBreedResource;
-
+use App\Utils\DogApiHelper;
 
 class DogApiController extends Controller
 {
-    protected $dogBreedApiHelper;
+    protected $dogApiHelper;
 
-    public function __construct(DogBreedApiHelper $dogBreedApiHelper)
+    public function __construct(DogApiHelper $dogApiHelper)
     {
-    	$this->dogBreedApiHelper = $dogBreedApiHelper;
+    	$this->dogApiHelper = $dogApiHelper;
     }
 
     /**
@@ -24,7 +22,7 @@ class DogApiController extends Controller
      */
     public function index(Request $request)
     {
-        $dogs = $this->dogBreedApiHelper->listAll();
+        $dogs = $this->dogApiHelper->listAll();
 
         //Todo: valitate response
 
@@ -39,7 +37,7 @@ class DogApiController extends Controller
      */
     public function show($breed)
     {
-        $dog = $this->dogBreedApiHelper->listImagesByBreed($breed);
+        $dog = $this->dogApiHelper->listImagesByBreed($breed);
 
         //Todo: valitate response
 
