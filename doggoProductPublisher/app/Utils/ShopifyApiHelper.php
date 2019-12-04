@@ -2,34 +2,50 @@
 
 namespace App\Utils;
 
-use GuzzleHttp\Client as ShopifyClient;
+use GuzzleHttp\Client as Client;
 
-class ShopifyProductHelper
+class ShopifyApiHelper
 {
 	protected $client;
 
-	public function __construct(ShopifyClient $client)
+	public function __construct(Client $client)
 	{
-		$this->client = $client;
-	}
+        $this->client = $client;
+    }
 
-	public function listAll()
+    public function index()
 	{
-		return $this->endpointRequest('the/path');
-	}
+		return $this->get('products.json');
+    }
 
-	public function endpointRequest($url)
+	public function create($productJson)
+	{
+		return $this->post('products.json', $productJson);
+    }
+
+	public function post($url, $json)
+	{
+		try {
+            $response = $this->client->request('POST', $url, ['json' => $json]);
+		} catch (\Exception $e) {
+            dump($e);
+            return [];
+		}
+		return $this->responseHandler($response->getBody()->getContents());
+    }
+
+    public function get($url)
 	{
 		try {
             $response = $this->client->request('GET', $url);
 		} catch (\Exception $e) {
-            // Todo: Log errors and notify?
+            dump($e);
             return [];
 		}
-		return $this->response_handler($response->getBody()->getContents());
+		return $this->responseHandler($response->getBody()->getContents());
 	}
 
-	public function response_handler($response)
+	public function responseHandler($response)
 	{
 		if ($response) {
 			return $response;

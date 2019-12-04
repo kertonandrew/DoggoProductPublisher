@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use GuzzleHttp\Client as ShopifyClient;
+use GuzzleHttp\Client;
 
 class ShopifyServiceProvider extends ServiceProvider
 {
@@ -19,13 +19,15 @@ class ShopifyServiceProvider extends ServiceProvider
         $password = env('SHOPIFY_API_PASSWORD');
         $version = env('SHOPIFY_API_VERSION');
 
-        $this->app->singleton('ShopifyClient', function($api) use ($baseUrl, $apiKey, $password, $version) {
-            return new ShopifyClient([
-                'base_url' => [$baseUrl.'/{version}/', ['version' => $version]],
-                'defaults' => [
-                    'auth'    => [$apiKey, $password]
-                ]
-            ]);
-        });
+        $this->app->when('App\Utils\ShopifyProductHelper')
+            ->needs('GuzzleHttp\Client')
+            ->give(function() use ($baseUrl, $apiKey, $password, $version) {
+                return new Client([
+                    'base_url' => [$baseUrl.'/{version}/', ['version' => $version]],
+                    'defaults' => [
+                        'auth'    => [$apiKey, $password]
+                    ]
+                ]);
+            });
     }
 }
