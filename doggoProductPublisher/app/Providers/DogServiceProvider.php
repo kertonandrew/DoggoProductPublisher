@@ -14,13 +14,13 @@ class DogServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $baseUrl = env('DOG_API_BASE_URL');
+        $baseUri = env('DOG_API_BASE_URI');
 
         $this->app->when('App\Utils\DogApiHelper')
             ->needs('GuzzleHttp\Client')
-            ->give(function() use ($baseUrl) {
+            ->give(function() use ($baseUri) {
                 return new Client([
-                    'base_uri' => $baseUrl,
+                    'base_uri' => $baseUri,
                 ]);
             });
     }
