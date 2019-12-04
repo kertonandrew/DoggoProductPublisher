@@ -11,12 +11,21 @@ class DogProduct extends Model
         'body_html',
         'vendor',
         'product_type',
+    ];
+
+    protected $with = [
+        'variants',
         'images'
     ];
 
     public function variants()
     {
-        return $this->hasMany(DogProductVariant::class);
+        return $this->hasMany(DogProductVariant::class, 'dog_product_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(DogProductImage::class);
     }
 }
 

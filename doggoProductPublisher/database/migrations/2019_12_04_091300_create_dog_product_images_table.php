@@ -15,10 +15,11 @@ class CreateDogProductImagesTable extends Migration
     {
         Schema::create('dog_product_images', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('dog_product_id');
             $table->string('src');
             $table->timestamps();
 
-            $table->foreign('dogProduct_id')->references('id')->on('dog_products');
+            $table->foreign('dog_product_id')->references('id')->on('dog_products');
         });
     }
 

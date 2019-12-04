@@ -54,30 +54,27 @@ class DogApiHelper
         //Todo: valitate response
 
         $dogs = [];
-        foreach ($doggoSelection as $breedName) {
+        $breedName = 'hound';
+        // foreach ($doggoSelection as $breedName) {
             $breedImage = $this->randonImageByBreed($breedName);
             $breedObj = DogBreed::create([
                 'name' => $breedName,
                 'imageUrl' => $breedImage
             ]);
 
-            $subBreeds = [];
             foreach ($dogList[$breedName] as $subBreedName) {
                 $subBreedImage = $this->randonImageBySubBreed($breedName, $subBreedName);
-                $subBreedObj = DogBreed::create([
+                DogBreed::create([
                     'breedGroup_id' => $breedObj->id,
-                    'name' => $breedName,
+                    'name' => $subBreedName,
                     'imageUrl' => $subBreedImage
                 ]);
-                $subBreeds[] = $subBreedObj;
             }
-
-            $breedObj->subBreeds()->saveMany($subBreeds);
-
+            $breedObj = DogBreed::find($breedObj->id);
             $dogs[] = $breedObj;
-        }
-        return collect($dogs);
+        // }
 
+        return collect($dogs);
     }
 
 	public function get($url)

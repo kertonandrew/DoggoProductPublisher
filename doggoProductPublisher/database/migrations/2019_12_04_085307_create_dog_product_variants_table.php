@@ -15,13 +15,13 @@ class CreateDogProductVariantsTable extends Migration
     {
         Schema::create('dog_product_variants', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('dogProduct_id');
+            $table->unsignedInteger('dog_product_id');
             $table->string('option1');
             $table->string('price');
             $table->string('sku');
             $table->timestamps();
 
-            $table->foreign('dogProduct_id')->references('id')->on('dog_products');
+            $table->foreign('dog_product_id')->references('id')->on('dog_products');
         });
     }
 
