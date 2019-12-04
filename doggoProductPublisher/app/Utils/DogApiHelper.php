@@ -50,6 +50,7 @@ class DogApiHelper
 		} catch (\Exception $e) {
 
             // Todo: Log errors and notify?
+
             return [];
 		}
 		return $this->responseHandler($response->getBody()->getContents());
@@ -57,9 +58,10 @@ class DogApiHelper
 
 	public function responseHandler($response)
 	{
-		if ($response) {
-			return $response;
-		}
+        $responseArray = json_decode($response, true);
+		if ($responseArray["status"] == "success") {
+			return $responseArray['message'];
+        }
 		return [];
 	}
 }

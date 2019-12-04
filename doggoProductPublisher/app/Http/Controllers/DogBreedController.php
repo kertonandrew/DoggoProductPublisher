@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\DogBreed;
+use App\Http\Resources\DogBreedResource;
 
 class DogBreedController extends Controller
 {

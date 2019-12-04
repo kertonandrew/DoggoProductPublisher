@@ -8,7 +8,7 @@ class DogBreed extends Model
 {
 
     protected $fillable = [
-        'breedGroup_id'.
+        'breedGroup_id',
         'name',
         'imageUrl'
     ];
