@@ -15,12 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Todo: Get dog breeds route
+// Source data from DogApi
 Route::get('dogBreeds', 'DogApiController@extractAllAndStore');
 Route::get('dogBreeds/{count}', 'DogApiController@extractAllAndStore');
-Route::get('dogBreeds/{breed}', 'DogApiController@extractBreedAndStore');
 
-// Todo: Get products route
-Route::post('dogProducts', 'ShopifyApiController@index');
-
-
+// Shopify Product routes
+Route::get('dogProducts', 'ShopifyApiController@index');

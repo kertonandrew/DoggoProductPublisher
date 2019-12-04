@@ -12,7 +12,3 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::get('dogBreeds', 'DogBreedController@index');
-// Route::post('dogBreeds', 'DogBreedController@store');
-// Route::delete('dogBreeds/{id}', 'DogBreedController@destroy');

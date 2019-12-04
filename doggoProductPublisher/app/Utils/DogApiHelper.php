@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use GuzzleHttp\Client as Client;
+use App\DogBreed;
 
 class DogApiHelper
 {
@@ -43,14 +44,48 @@ class DogApiHelper
 		return $this->get('breed/'.$breed.'/'.$subBreed.'/images/random/'.$count);
     }
 
+    // Gets all the breeds from the API returns a random selection as a collection of DogBreeds
+    // Not sure if this should be in this class from a Laravel perspective
+    public function extractAllAndStore($count = 5)
+    {
+        $dogList = $this->listAll();
+        $doggoSelection = array_rand($dogList, $count);
+
+        //Todo: valitate response
+
+        $dogs = [];
+        foreach ($doggoSelection as $breedName) {
+            $breedImage = $this->randonImageByBreed($breedName);
+            $breedObj = DogBreed::create([
+                'name' => $breedName,
+                'imageUrl' => $breedImage
+            ]);
+
+            $subBreeds = [];
+            foreach ($dogList[$breedName] as $subBreedName) {
+                $subBreedImage = $this->randonImageBySubBreed($breedName, $subBreedName);
+                $subBreedObj = DogBreed::create([
+                    'breedGroup_id' => $breedObj->id,
+                    'name' => $breedName,
+                    'imageUrl' => $subBreedImage
+                ]);
+                $subBreeds[] = $subBreedObj;
+            }
+
+            $breedObj->subBreeds()->saveMany($subBreeds);
+
+            $dogs[] = $breedObj;
+        }
+        return collect($dogs);
+
+    }
+
 	public function get($url)
 	{
 		try {
             $response = $this->client->request('GET', $url);
 		} catch (\Exception $e) {
-
-            // Todo: Log errors and notify?
-
+            dump($e);
             return [];
 		}
 		return $this->responseHandler($response->getBody()->getContents());
