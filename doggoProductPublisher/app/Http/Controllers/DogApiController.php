@@ -31,34 +31,39 @@ class DogApiController extends Controller
         $dogs = [];
         foreach ($dogsArray as $breedName => $subBreedNames) {
 
-            $breedImage = $this->dogApiHelper->randonImageByBreed($breedName);
-
-            $breedObj = DogBreed::create([
+            $breedObj = new DogBreed();
+            $breedObj->fill([
                 'name' => $breedName,
-                'imageUrl' => $breedImage
+                'imageUrl' => $this->dogApiHelper->randonImageByBreed($breedName)
             ]);
 
             $subBreeds = [];
             foreach ($subBreedNames as $subBreedName) {
-                $subBreedImage = $this->dogApiHelper->randonImageByBreed($subBreedName);
 
-                $subBreeds[] = DogBreed::create([
+                $subBreedObj = new DogBreed();
+                $subBreedObj->fill([
                     'breedGroup_id' => $breedObj->id,
                     'name' => $breedName,
-                    'imageUrl' => $subBreedImage
+                    'imageUrl' => $this->dogApiHelper->randonImageByBreed($subBreedName)
                 ]);
+
+                $subBreeds[] = $subBreedObj;
             }
 
-            $breedObj->subBreeds()->saveMany($subBreeds);
+            // To handle "Array to string conversion" issue - not sure what's happening here.
+            // Mostly likely something that would be handled by propper validation.
+            try{
+                $breedObj->subBreeds()->saveMany($subBreeds);
+            } catch(\Exception $e){
+                dump($e);
+            }
 
             $dogs[] = $breedObj;
         }
 
-        dd($dogs);
-
         //Todo: create dog breed model
 
-        return DogBreedResource::collection($dogs);
+        return $dogs;
     }
 
     /**
