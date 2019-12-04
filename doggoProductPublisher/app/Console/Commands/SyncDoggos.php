@@ -46,12 +46,9 @@ class SyncDoggos extends Command
     public function handle(ShopifyApiHelper $shopifyApiHelper, DogApiHelper $dogApiHelper, Faker $faker)
     {
         $dogs = $dogApiHelper->extractAllAndStore();
+        dump("Dogs created and collected");
 
-        dump($dogs);
-
-        $dogs->each(function ($dog) use ($faker){
-
-            dump($dog);
+        $dogs->each(function ($dog) use ($shopifyApiHelper, $faker){
 
             $dogProduct = DogProduct::create([
                 'title' => $dog->name,
@@ -68,18 +65,25 @@ class SyncDoggos extends Command
 
             // Add variants
             foreach ($dog->subBreeds as $subBreed) {
-
                 DogProductVariant::create([
                     'dog_product_id' => $dogProduct->id,
-                    'price' => $faker->randomNumber(2),
+                    'price' => $faker->randomNumber(4),
                     'option1' => $subBreed->name,
                     'sku' => $faker->isbn10
                 ]);
             }
+            dump("processing complete");
 
             $dogProduct = DogProduct::find($dogProduct->id);
+            dump("Found DogProduct");
 
-            dd($dogProduct->toArray());
+            $data = json_encode((object)[
+                'product' => $dogProduct->toArray()
+            ], true);
+
+            dump($data);
+
+            return $shopifyApiHelper->create($data);
         });
     }
 }

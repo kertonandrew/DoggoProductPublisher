@@ -18,6 +18,12 @@ class DogProduct extends Model
         'images'
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
     public function variants()
     {
         return $this->hasMany(DogProductVariant::class, 'dog_product_id');

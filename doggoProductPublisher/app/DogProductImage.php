@@ -11,6 +11,13 @@ class DogProductImage extends Model
         'src'
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'dog_product_id'
+    ];
+
     public function product()
     {
         return $this->belongsTo(DogProduct::class,'dog_product_id');
