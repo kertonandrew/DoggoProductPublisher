@@ -38,7 +38,6 @@ class ProductSync implements ShouldQueue
     {
         $dogs = $this->dogApiHelper->extractAllAndStore();
 
-
-
+        dd($dogs);
     }
 }
